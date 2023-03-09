@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.dark {
+  @apply bg-zinc-800 text-zinc-100;
+}
+
+.delete {
+  display: none;
+}
+
+.item:hover .delete {
+  display: block;
+}
+
+.complete {
+  display: none;
+}
+
+.complete-circle:hover .complete {
+  display: block;
+}
