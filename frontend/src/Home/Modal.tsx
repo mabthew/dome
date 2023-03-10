@@ -1,5 +1,14 @@
 export default function Modal(props: {text: string, setText: Function, setShowModal: Function, saveItem: Function}) {
-  return (
+
+    // This is to save on enter, but not when shift entering
+    function onEnterPress(e: any): void {
+        if(e.keyCode === 13 && e.shiftKey === false) {
+            e.preventDefault();
+            props.saveItem()
+        }
+    }
+
+    return (
     <div id="item-modal" tabIndex={-1} className="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto bg-zinc-700 bg-opacity-75 md:inset-0 h-modal md:h-full flex h-screen">
         <div className="relative w-2/3 h-3/4 mx-auto my-auto">
             <div className="relative bg-zinc-50 rounded-lg h-full shadow dark:bg-zinc-800">
@@ -9,10 +18,10 @@ export default function Modal(props: {text: string, setText: Function, setShowMo
                 </button>
                 <div className="px-6 py-6 lg:px-8">
                     <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">What do you need to do?</h3>
-                    <form className="space-y-6">
+                    <form onSubmit={() => props.saveItem()}className="space-y-6">
                         <div>
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label>
-                            <textarea onChange={e=>props.setText(e.target.value)} className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Take it easy" value={props.text} required></textarea>
+                            <textarea onKeyDown={onEnterPress} onChange={e=>props.setText(e.target.value)} className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Take it easy" value={props.text} required></textarea>
                         </div>
                         {/* <div className="relative max-w-sm">
                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
