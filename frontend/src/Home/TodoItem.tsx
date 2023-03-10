@@ -1,6 +1,6 @@
 import { useMutation, gql } from "@apollo/client";
 import { queries } from "../graphql/queries";
-import { GET_ALL_USER_TODO_ITEMS } from '../operations/queries/getAllUserTodoItems';
+import { GET_ALL_TODO_ITEMS } from '../operations/queries/getAllTodoItems';
 import { OperationType } from "../actions/actionTypes";
 const { DateTime } = require("luxon");
 
@@ -12,7 +12,7 @@ type TodoItemProps = {
 };
 
 interface TodoItemsResult {
-  userTodoItems: any;
+  todoItems: any;
 }
 
 export default function TodoItem(props: {userId: String, todoItem: TodoItemProps, updateItems: Function, openModal: Function, popToast: Function}) {
@@ -22,7 +22,7 @@ export default function TodoItem(props: {userId: String, todoItem: TodoItemProps
     const [completeTodoItem] = useMutation(queries.TOGGLE_ITEM_COMPLETED, {
       refetchQueries: [
         {
-          query: GET_ALL_USER_TODO_ITEMS, 
+          query: GET_ALL_TODO_ITEMS, 
           variables: {user_id: userId}
         },
       ]
@@ -31,7 +31,7 @@ export default function TodoItem(props: {userId: String, todoItem: TodoItemProps
     const [deleteTodoItem] = useMutation(queries.DELETE_ITEM, {
       refetchQueries: [
         {
-          query: GET_ALL_USER_TODO_ITEMS, 
+          query: GET_ALL_TODO_ITEMS, 
           variables: {user_id: userId}
         },
       ]
@@ -46,13 +46,13 @@ export default function TodoItem(props: {userId: String, todoItem: TodoItemProps
         variables: { id: todoItem.id, user_id: userId },
         update(cache, _) {          
           let existingTodos = cache.readQuery<TodoItemsResult>({
-            query: GET_ALL_USER_TODO_ITEMS, 
+            query: GET_ALL_TODO_ITEMS, 
             variables: {user_id: userId}
           })
 
-          const newTodos = existingTodos!.userTodoItems.filter((t: any) => (t.id !== todoItem.id));
+          const newTodos = existingTodos!.todoItems.filter((t: any) => (t.id !== todoItem.id));
           
-          cache.writeQuery({ query: GET_ALL_USER_TODO_ITEMS , data: { userTodoItems: newTodos }, variables: { user_id: userId }});
+          cache.writeQuery({ query: GET_ALL_TODO_ITEMS , data: { todoItems: newTodos }, variables: { user_id: userId }});
         },
         optimisticResponse: {
           deleteTodoItem: {
@@ -74,15 +74,15 @@ export default function TodoItem(props: {userId: String, todoItem: TodoItemProps
         update(cache, mutationResult) {
           
           let existingTodos = cache.readQuery<TodoItemsResult>({
-            query: GET_ALL_USER_TODO_ITEMS, 
+            query: GET_ALL_TODO_ITEMS, 
             variables: {user_id: userId}
           })
      
           // this code looks the same as the delete code because the query GET_ALL_USER_TODO_ITEMS only returns
           // non-completed todo items in the firest place
-          const newTodos = existingTodos!.userTodoItems.filter((t: any) => (t.id !== todoItem.id));
+          const newTodos = existingTodos!.todoItems.filter((t: any) => (t.id !== todoItem.id));
           
-          cache.writeQuery({ query: GET_ALL_USER_TODO_ITEMS , data: { userTodoItems: newTodos }, variables: { user_id: userId }});
+          cache.writeQuery({ query: GET_ALL_TODO_ITEMS , data: { todoItems: newTodos }, variables: { user_id: userId }});
         },
         optimisticResponse: {
           toggleTodoItemCompleted: {

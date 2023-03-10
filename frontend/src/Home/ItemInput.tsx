@@ -30,7 +30,7 @@ export default function ItemInput(props: { userId: String, updateItems: Function
           if (resultItem) {
             cache.modify({
               fields: {
-                userTodoItems(existingItemsRef = []) {
+                todoItems(existingItemsRef = []) {
                   const newItemRef = cache.writeFragment({
                     data: resultItem,
                     fragment: gql`

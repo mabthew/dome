@@ -14,8 +14,7 @@ export const typeDefs = gql`
   }
 
   type Query {
-    todoItems: [TodoItem!]!
-    userTodoItems(user_id: ID!): [TodoItem!]!
+    todoItems(user_id: ID!): [TodoItem!]!
   }
   
   type Mutation {

@@ -11,15 +11,15 @@ const { DateTime } = require("luxon");
 
 // TODO (before-deploy): This file absolutely sucks. clean it up. probably start with finding a way
 //                          to decrease the amount or prop passing with ItemOperationAlert
-export default function TodoList(props: { userId: String, userTodoItems: [], updateItems: Function, popToast: Function, openModal: Function }) {
+export default function TodoList(props: { userId: String, todoItems: [], updateItems: Function, popToast: Function, openModal: Function }) {
     let userId = props.userId;
-    let userTodoItems = props.userTodoItems;
+    let todoItems = props.todoItems;
 
     const parentRef = useRef<HTMLDivElement>();
     const [updateItem, { data, loading, error }] = useMutation(queries.UPDATE_ITEM);
 
       const uniqueDays = new Set<String>;
-      userTodoItems.forEach((item: any) => {
+      todoItems.forEach((item: any) => {
         let day = DateTime.fromISO(item.created_at).toFormat('EEE MMM dd');
         if (!uniqueDays.has(day)) {
             uniqueDays.add(day)
@@ -28,7 +28,7 @@ export default function TodoList(props: { userId: String, userTodoItems: [], upd
 
       const todoItemElementsByDate: JSX.Element[] = [];
       uniqueDays.forEach((day: any) => {
-        const items: JSX.Element[] = userTodoItems.filter((item: any) => DateTime.fromISO(item.created_at).toFormat('EEE MMM dd') == day).map((it: any, index: number) => {
+        const items: JSX.Element[] = todoItems.filter((item: any) => DateTime.fromISO(item.created_at).toFormat('EEE MMM dd') == day).map((it: any, index: number) => {
             return (
                 <div key={index}>
                     <TodoItem key={index} userId={userId} todoItem={it} updateItems={props.updateItems} openModal={props.openModal} popToast={props.popToast}/>

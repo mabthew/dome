@@ -18,6 +18,21 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 
 dotenv.config()
 
+const PostgresDatabase = require("./src/datasources/PostgresDatabase");
+
+const knexConfig = {
+  client: "pg",
+  connection: {
+    user: "postgres",
+    host: "localhost",
+    database: "todo",
+    port: 5432,
+  }
+};
+
+// you can also pass a knex instance instead of a configuration object
+const db = new PostgresDatabase(knexConfig);
+
 const server = new ApolloServer({
   schema: makeExecutableSchema({
     typeDefs: [
@@ -26,6 +41,7 @@ const server = new ApolloServer({
     ],
     resolvers
   }),
+  dataSources: () => ({ db })
 });
 
 

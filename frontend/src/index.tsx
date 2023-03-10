@@ -12,7 +12,7 @@ const client = new ApolloClient({
         typePolicies: {
             Query: {
                 fields: {
-                  userTodoItems: {
+                  todoItems: {
                     merge(existing, incoming){
                         return incoming
                       }

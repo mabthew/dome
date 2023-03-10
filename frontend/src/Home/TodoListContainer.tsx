@@ -1,16 +1,15 @@
 import TodoList from "./TodoList";
 import ItemInput from "./ItemInput";
 import Loader from "../common/Loader";
-import { useQuery, gql, useMutation } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { queries } from '../graphql/queries';
-import { useRef, MutableRefObject, useState } from "react";
+import { useState } from "react";
 import React from "react";
 import toast from "react-hot-toast";
-import { text } from "stream/consumers";
 import { OperationType } from "../actions/actionTypes";
 import ItemOperationAlert from "./ItemOperationAlert";
 import Modal from "./Modal";
-import { GET_ALL_USER_TODO_ITEMS } from "../operations/queries/getAllUserTodoItems";
+import { GET_ALL_TODO_ITEMS } from "../operations/queries/getAllTodoItems";
 
 export default function TodoListContainer(props: { userId: String}) {
 
@@ -18,7 +17,7 @@ export default function TodoListContainer(props: { userId: String}) {
     const [text, setText] = useState("");
     const [updateItem, {  }] = useMutation(queries.UPDATE_ITEM);
 
-    const { data, loading, error, refetch} = useQuery(GET_ALL_USER_TODO_ITEMS, {
+    const { data, loading, error, refetch} = useQuery(GET_ALL_TODO_ITEMS, {
         variables: { user_id: userId },
       });
 
@@ -41,7 +40,7 @@ export default function TodoListContainer(props: { userId: String}) {
     const [undoCompleteItem] = useMutation(queries.TOGGLE_ITEM_COMPLETED, {
         refetchQueries: [
           {
-            query: GET_ALL_USER_TODO_ITEMS, 
+            query: GET_ALL_TODO_ITEMS, 
             variables: {user_id: userId}
           },
         ]
@@ -50,7 +49,7 @@ export default function TodoListContainer(props: { userId: String}) {
       const [undoDeleteItem] = useMutation(queries.UNDO_DELETE_ITEM, {
         refetchQueries: [
           {
-            query: GET_ALL_USER_TODO_ITEMS, 
+            query: GET_ALL_TODO_ITEMS, 
             variables: {user_id: userId}
           },
         ]
@@ -96,7 +95,7 @@ export default function TodoListContainer(props: { userId: String}) {
 
     return (
         <div className="pb-12">
-            <TodoList userId={userId} userTodoItems={data.userTodoItems} updateItems={refetch} popToast={popToast} openModal={openModal}/>
+            <TodoList userId={userId} todoItems={data.todoItems} updateItems={refetch} popToast={popToast} openModal={openModal}/>
             <ItemInput userId={userId} updateItems={updateItems} popToast={popToast}/>
             {
                         showModal 
