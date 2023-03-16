@@ -22,8 +22,7 @@ export default function TodoItem(props: {userId: String, todoItem: TodoItemProps
     const [completeTodoItem] = useMutation(queries.TOGGLE_ITEM_COMPLETED, {
       refetchQueries: [
         {
-          query: GET_ALL_TODO_ITEMS, 
-          variables: {user_id: userId}
+          query: GET_ALL_TODO_ITEMS,
         },
       ]
     });
@@ -31,8 +30,7 @@ export default function TodoItem(props: {userId: String, todoItem: TodoItemProps
     const [deleteTodoItem] = useMutation(queries.DELETE_ITEM, {
       refetchQueries: [
         {
-          query: GET_ALL_TODO_ITEMS, 
-          variables: {user_id: userId}
+          query: GET_ALL_TODO_ITEMS,
         },
       ]
     });
@@ -46,13 +44,12 @@ export default function TodoItem(props: {userId: String, todoItem: TodoItemProps
         variables: { id: todoItem.id, user_id: userId },
         update(cache, _) {          
           let existingTodos = cache.readQuery<TodoItemsResult>({
-            query: GET_ALL_TODO_ITEMS, 
-            variables: {user_id: userId}
+            query: GET_ALL_TODO_ITEMS,
           })
 
           const newTodos = existingTodos!.todoItems.filter((t: any) => (t.id !== todoItem.id));
           
-          cache.writeQuery({ query: GET_ALL_TODO_ITEMS , data: { todoItems: newTodos }, variables: { user_id: userId }});
+          cache.writeQuery({ query: GET_ALL_TODO_ITEMS , data: { todoItems: newTodos }});
         },
         optimisticResponse: {
           deleteTodoItem: {
@@ -74,15 +71,14 @@ export default function TodoItem(props: {userId: String, todoItem: TodoItemProps
         update(cache, mutationResult) {
           
           let existingTodos = cache.readQuery<TodoItemsResult>({
-            query: GET_ALL_TODO_ITEMS, 
-            variables: {user_id: userId}
+            query: GET_ALL_TODO_ITEMS,
           })
      
           // this code looks the same as the delete code because the query GET_ALL_USER_TODO_ITEMS only returns
           // non-completed todo items in the firest place
           const newTodos = existingTodos!.todoItems.filter((t: any) => (t.id !== todoItem.id));
           
-          cache.writeQuery({ query: GET_ALL_TODO_ITEMS , data: { todoItems: newTodos }, variables: { user_id: userId }});
+          cache.writeQuery({ query: GET_ALL_TODO_ITEMS , data: { todoItems: newTodos }});
         },
         optimisticResponse: {
           toggleTodoItemCompleted: {

@@ -18,7 +18,6 @@ export default function TodoListContainer(props: { userId: String}) {
     const [updateItem, {  }] = useMutation(queries.UPDATE_ITEM);
 
     const { data, loading, error, refetch} = useQuery(GET_ALL_TODO_ITEMS, {
-        variables: { user_id: userId },
       });
 
     function updateItems(): void {
@@ -40,8 +39,7 @@ export default function TodoListContainer(props: { userId: String}) {
     const [undoCompleteItem] = useMutation(queries.TOGGLE_ITEM_COMPLETED, {
         refetchQueries: [
           {
-            query: GET_ALL_TODO_ITEMS, 
-            variables: {user_id: userId}
+            query: GET_ALL_TODO_ITEMS,
           },
         ]
       });
@@ -49,8 +47,7 @@ export default function TodoListContainer(props: { userId: String}) {
       const [undoDeleteItem] = useMutation(queries.UNDO_DELETE_ITEM, {
         refetchQueries: [
           {
-            query: GET_ALL_TODO_ITEMS, 
-            variables: {user_id: userId}
+            query: GET_ALL_TODO_ITEMS,
           },
         ]
       });

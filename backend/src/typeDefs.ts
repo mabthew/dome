@@ -1,4 +1,3 @@
-// The GraphQL schema
 import { gql }  from 'apollo-server';
 
 export const typeDefs = gql`
@@ -14,7 +13,7 @@ export const typeDefs = gql`
   }
 
   type Query {
-    todoItems(user_id: ID!): [TodoItem!]!
+    todoItems: [TodoItem!]!
   }
   
   type Mutation {

@@ -5,11 +5,10 @@ import Dashboard from "supertokens-node/recipe/dashboard";
 
 export const SuperTokensConfig: TypeInput = {
     supertokens: {
-        // this is the location of the SuperTokens core.
         connectionURI: "https://try.supertokens.com",
     },
     appInfo: {
-        appName: "SuperTokens Demo App",
+        appName: "Dome",
         apiDomain: "http://localhost:3001",
         websiteDomain: "http://localhost:3000",
     },
